@@ -1,5 +1,6 @@
 
 from google.oauth2 import id_token
+from google.auth.transport.requests import Request
 import requests
 from seldon_core.utils import get_data_from_proto
 

@@ -22,6 +22,7 @@ setuptools.setup(
     install_requires=[
         'python-dotenv>=0.17.1',
         'google-oauth>=1.0.1',
+        'google-auth>=1.30.0'
         'requests>=2.25.1',
         'seldon-core>=1.7.0',
         'numpy>=1.20.3'

@@ -3,6 +3,8 @@ from google.oauth2 import id_token
 from google.auth.transport.requests import Request
 import requests
 from seldon_core.utils import get_data_from_proto
+import numpy as np
+import json
 
 def make_iap_request(url, client_id, method="GET", **kwargs):
     """Makes a request to an application protected by Identity-Aware Proxy.
@@ -47,3 +49,12 @@ def make_iap_request(url, client_id, method="GET", **kwargs):
         )
     else:
         return resp.text
+
+def convert_response(response):
+
+    response = json.loads(response)
+    data = response["data"]
+    if "ndarray" in data:
+        result = np.array(data["ndarray"])
+
+    return result

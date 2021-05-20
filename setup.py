@@ -25,6 +25,6 @@ setuptools.setup(
         'google-auth',
         'requests',
         'seldon-core',
-        'numpy
+        'numpy',
     ]
 )

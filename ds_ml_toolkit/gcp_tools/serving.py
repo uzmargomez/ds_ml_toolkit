@@ -1,10 +1,49 @@
 
 from google.oauth2 import id_token
 from google.auth.transport.requests import Request
+from google.auth import environment_vars
+from google.auth import exceptions
+from google.auth import jwt
 import requests
 from seldon_core.utils import get_data_from_proto
 import numpy as np
 import json
+import os
+
+# Customer function to get token.  Altered from fetch_id_token() here:                                                                 
+# https://googleapis.dev/python/google-auth/1.14.0/_modules/google/oauth2/id_token.html#fetch_id_token
+def get_token(request, audience):
+    credentials_filename = os.environ.get(environment_vars.CREDENTIALS)
+    if not (
+        credentials_filename
+        and os.path.exists(credentials_filename)
+        and os.path.isfile(credentials_filename)
+    ):
+        raise exceptions.DefaultCredentialsError(
+            "Neither metadata server or valid service account credentials are found."
+        )
+
+    try:
+        with open(credentials_filename, "r") as f:
+            info = json.load(f)
+            credentials_content = (
+                (info.get("type") == "service_account") and info or None
+            )
+
+            from google.oauth2 import service_account
+
+            credentials = service_account.IDTokenCredentials.from_service_account_info(
+                credentials_content, target_audience=audience
+            )
+    except ValueError as caught_exc:
+        new_exc = exceptions.DefaultCredentialsError(
+            "Neither metadata server or valid service account credentials are found.",
+            caught_exc,
+        )
+        six.raise_from(new_exc, caught_exc)
+
+    credentials.refresh(request)
+    return credentials.token
 
 def make_iap_request(url, client_id, method="GET", **kwargs):
     """Makes a request to an application protected by Identity-Aware Proxy.
@@ -25,7 +64,7 @@ def make_iap_request(url, client_id, method="GET", **kwargs):
 
     # Obtain an OpenID Connect (OIDC) token from metadata server or using service
     # account.
-    open_id_connect_token = id_token.fetch_id_token(Request(), client_id)
+    open_id_connect_token = get_token(Request(), client_id)
 
     # Fetch the Identity-Aware Proxy-protected URL, including an
     # Authorization header containing "Bearer " followed by a

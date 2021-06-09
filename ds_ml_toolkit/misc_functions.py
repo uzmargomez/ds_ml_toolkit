@@ -17,3 +17,27 @@ def progress(count, total, status=""):
         % (bar, percents, "%", status, total)
     )
     sys.stdout.flush()
+
+def get_logger(name="",level=None):
+    if level is not None:
+        # read logging level from yaml CONFIG file
+        if level == "INFO":
+            level = logging.INFO
+        elif level == "DEBUG":
+            level = logging.DEBUG
+        elif level == "ERROR":
+            level = logging.ERROR
+        elif level == "CRITICAL":
+            level = logging.CRITICAL
+        else:
+            level = logging.INFO
+    else:
+        level = logging.INFO
+
+    logger = logging.getLogger(name=name)
+    logging.basicConfig(
+        format="[%(asctime)s] [%(levelname)8s] (%(filename)s:%(lineno)s) %(message)s ", 
+        level=level,
+        datefmt="%Y-%m-%d %H:%M:%S",
+        )
+    return logger

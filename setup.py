@@ -26,5 +26,10 @@ setuptools.setup(
         'requests',
         'seldon-core',
         'numpy',
+        'google-cloud-bigquery-storage',
+        'google-cloud-storage',
+        'google-cloud-bigquery[bqstorage,pandas]',
+        'pyarrow',
+        'tqdm',
     ]
 )

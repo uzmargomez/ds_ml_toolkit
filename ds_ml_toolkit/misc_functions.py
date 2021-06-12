@@ -1,4 +1,5 @@
 import sys
+import logging
 
 def progress(count, total, status=""):
     """

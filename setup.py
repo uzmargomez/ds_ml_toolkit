@@ -31,5 +31,7 @@ setuptools.setup(
         'google-cloud-bigquery[bqstorage,pandas]',
         'pyarrow',
         'tqdm',
+        'fsspec',
+        'gcsfs'
     ]
 )

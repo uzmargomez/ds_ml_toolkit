@@ -1,4 +1,5 @@
-from google.cloud import bigquery
+from google.cloud import bigquery,bigquery_storage
+
 import pandas as pd
 import logging
 

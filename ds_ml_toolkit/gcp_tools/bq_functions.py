@@ -3,6 +3,11 @@ from google.cloud import bigquery,bigquery_storage
 import pandas as pd
 import logging
 
+def execute_query(sql):
+    bqclient = bigquery.Client()
+    query_job = bqclient.query(sql)
+    results = query_job.result()  # Waits for job to complete.
+    return results
 
 def bq_query_to_df(sql):
     bqclient = bigquery.Client()

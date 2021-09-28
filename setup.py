@@ -32,6 +32,7 @@ setuptools.setup(
         'pyarrow',
         'tqdm',
         'fsspec',
-        'gcsfs'
+        'gcsfs',
+        'pyyaml'
     ]
 )

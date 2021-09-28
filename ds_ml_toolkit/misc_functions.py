@@ -1,5 +1,13 @@
 import sys
 import logging
+import yaml
+import os
+
+def read_configs(file='CONFIG.yaml', key=None):
+    config = yaml.full_load(open(file, 'r'))
+    if key is not None:
+        return config[key]
+    return config
 
 def progress(count, total, status=""):
     """
